@@ -1,4 +1,4 @@
-# BPC - DE1 - project - Ciphers on FPGA
+# BPC/DE1 - project - Ciphers on FPGA
 
 ## Topic 5: Implementation of Basic Ciphers
 
