@@ -8,11 +8,15 @@ This project aims to demonstrate various simple ciphers, such as the Vernam Ciph
 
 ## Team members
 
-**Vít Vašenka** - Implementing various cipher algorithms on an FPGA
+- **Vít Vašenka**
+  - Implementing various cipher algorithms on an FPGA
 
-**Jindřich Zobač** - Designing a Human-Machine Interface (HMI) input for an FPGA 
+- **Jindřich Zobač**
+  - Designing a Human-Machine Interface (HMI) input for an FPGA 
 
-**Erik Straka** - Designing a Human-Machine Interface (HMI) output for an FPGA, Github structure organizer
+- **Erik Straka**
+  - Designing a Human-Machine Interface (HMI) output for an FPGA
+  - Github structure organizer
 
 ## Theoretical description and explanation
 
