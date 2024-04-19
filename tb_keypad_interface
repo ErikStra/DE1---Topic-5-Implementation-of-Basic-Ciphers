@@ -1,0 +1,130 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 04/19/2024 10:15:52 AM
+-- Design Name: 
+-- Module Name: tb_keypad_interface - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+-- Testbench automatically generated online
+-- at https://vhdl.lapinoo.net
+-- Generation date : 19.4.2024 08:11:21 UTC
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tb_keypad_interface is
+end tb_keypad_interface;
+
+architecture tb of tb_keypad_interface is
+
+    component keypad_interface
+        port (CLK     : in std_logic;
+              RESET   : in std_logic;
+              ROW0    : out std_logic;
+              ROW1    : out std_logic;
+              ROW2    : out std_logic;
+              ROW3    : out std_logic;
+              COL0    : in std_logic;
+              COL1    : in std_logic;
+              COL2    : in std_logic;
+              COL3    : in std_logic;
+              KEY_OUT : out std_logic_vector (4 downto 0));
+    end component;
+
+    signal CLK     : std_logic;
+    signal RESET   : std_logic;
+    signal ROW0    : std_logic;
+    signal ROW1    : std_logic;
+    signal ROW2    : std_logic;
+    signal ROW3    : std_logic;
+    signal COL0    : std_logic;
+    signal COL1    : std_logic;
+    signal COL2    : std_logic;
+    signal COL3    : std_logic;
+    signal KEY_OUT : std_logic_vector (4 downto 0);
+
+    constant TbPeriod : time := 100 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
+
+begin
+
+    dut : keypad_interface
+    port map (CLK     => CLK,
+              RESET   => RESET,
+              ROW0    => ROW0,
+              ROW1    => ROW1,
+              ROW2    => ROW2,
+              ROW3    => ROW3,
+              COL0    => COL0,
+              COL1    => COL1,
+              COL2    => COL2,
+              COL3    => COL3,
+              KEY_OUT => KEY_OUT);
+
+    -- Clock generation
+    TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
+
+    -- EDIT: Check that CLK is really your main clock signal
+    CLK <= TbClock;
+
+    stimuli : process
+    begin
+        -- EDIT Adapt initialization as needed
+        COL0 <= '1';
+        COL1 <= '1';
+        COL2 <= '1';
+        COL3 <= '1';
+
+        -- Reset generation
+        -- EDIT: Check that RESET is really your reset signal
+        RESET <= '1';
+        wait for 200 ns;
+        RESET <= '0';
+        wait for 200 ns;
+
+        -- EDIT Add stimuli here
+        wait for 10 * TbPeriod;
+        COL0 <= '0';
+        wait for 5 * TbPeriod;
+        COL0 <= '1';
+        wait for 20 * TbPeriod;
+        COL1 <= '0';
+        wait for 5 * TbPeriod;
+        COL1 <= '1';
+        wait for 5 * TbPeriod;
+        COL1 <= '0';
+        wait for 5 * TbPeriod;
+        COL1 <= '1';
+        wait for 20 * TbPeriod;
+        
+        
+        
+        
+
+        -- Stop the clock and hence terminate the simulation
+        TbSimEnded <= '1';
+        wait;
+    end process;
+
+end tb;
+
+-- Configuration block below is required by some simulators. Usually no need to edit.
+
+configuration cfg_tb_keypad_interface of tb_keypad_interface is
+    for tb
+    end for;
+end cfg_tb_keypad_interface;
