@@ -35,7 +35,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity cezar is
     Port ( clk : in STD_LOGIC;
            input : in STD_LOGIC_VECTOR (4 downto 0);
-           pos : in STD_LOGIC_VECTOR (4 downto 0);
+           key : in STD_LOGIC_VECTOR (4 downto 0);
            coded_txt : in STD_LOGIC_VECTOR (4 downto 0);
            SW : in STD_LOGIC;
            code_out : out STD_LOGIC_VECTOR (4 downto 0);
@@ -52,19 +52,19 @@ begin
     begin
         if rising_edge(clk) then                    
            if(SW='0') then
-                cezar_sum:= unsigned(input) + unsigned(pos);
+                cezar_sum:= unsigned(input) + unsigned(key);
                 code_out <= std_logic_vector(cezar_sum);
             end if;
         end if;
     end process code;
     
     decode : process (clk)
-    variable cezar_sub : unsigned(4 downto 0);
+    variable cezar_min : unsigned(4 downto 0);
     begin
         if rising_edge(clk) then
             if(SW='1') then
-                cezar_sub := unsigned(coded_txt) - unsigned(pos);
-                decode_out <= std_logic_vector(cezar_sub);
+                cezar_min := unsigned(coded_txt) - unsigned(key);
+                decode_out <= std_logic_vector(cezar_min);
             end if;
         end if;
     end process decode;
