@@ -13,7 +13,7 @@ architecture tb of tb_cezar is
     component cezar
         port (clk        : in std_logic;
               input      : in std_logic_vector (4 downto 0);
-              pos        : in std_logic_vector (4 downto 0);
+              key        : in std_logic_vector (4 downto 0);
               coded_txt  : in std_logic_vector (4 downto 0);
               SW         : in std_logic;
               code_out   : out std_logic_vector (4 downto 0);
@@ -22,7 +22,7 @@ architecture tb of tb_cezar is
 
     signal clk        : std_logic;
     signal input      : std_logic_vector (4 downto 0);
-    signal pos        : std_logic_vector (4 downto 0);
+    signal key        : std_logic_vector (4 downto 0);
     signal coded_txt  : std_logic_vector (4 downto 0);
     signal SW         : std_logic;
     signal code_out   : std_logic_vector (4 downto 0);
@@ -37,7 +37,7 @@ begin
     dut : cezar
     port map (clk        => clk,
               input      => input,
-              pos        => pos,
+              key        => key,
               coded_txt  => coded_txt,
               SW         => SW,
               code_out   => code_out,
@@ -53,7 +53,7 @@ begin
     begin
         -- EDIT Adapt initialization as needed
         SW<= '0';
-        pos <= "00101";
+        key <= "00101";
         wait for 50 ns;
         input <= "00000";
         wait for 50 ns;
@@ -68,7 +68,7 @@ begin
         
 
         SW<= '1';
-        pos <= "11101";
+        key <= "11101";
         wait for 50 ns;
         coded_txt <= "00000";
         wait for 50 ns;
