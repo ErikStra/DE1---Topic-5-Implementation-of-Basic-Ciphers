@@ -1,18 +1,20 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: JEV TEAM
+-- Engineer: Jindra Zobac
 -- 
--- Create Date: 04/29/2024 10:43:12 AM
--- Design Name: 
--- Module Name: interpreter - Behavioral
--- Project Name: 
--- Target Devices: 
+-- Create Date: 04/29/2024 10:40:42 AM
+-- Design Name: Keyad module
+-- Module Name: keypad - Behavioral
+-- Project Name: Ciphers on FPGA
+-- Target Devices: Nexys A50T
 -- Tool Versions: 
--- Description: 
+-- Description: Purpose of this module is to generate a short pulse containing a letter code upon every hit of "SEND" key.
+    -- it also triggers BACKSPACE pulse upon press of BACKSPACE key. The resulting letter code is based on last 2 pressed
+    -- keys. If double press is detected, the incoming letter code is incremented (= next letter)
 -- 
--- Dependencies: 
+-- Dependencies:
 -- 
--- Revision:
+-- Revision: 1
 -- Revision 0.01 - File Created
 -- Additional Comments:
 -- 
@@ -48,7 +50,10 @@ begin
     
     if rising_edge(CLK) then
     curr_key <= KEY;
-    
+    --FSM has 5 states:
+        -- IDLE: waiting for a keypress. First checks if any special key has been pressed and then checks the other keys
+        -- if "ordinary" key is pressed, algorithm decides the next state NEWKEY or DOUBLEKEY by comparing previous
+        -- input key with current.
         case state is
             when IDLE =>
                 if KEY /= "00000" then
@@ -67,9 +72,7 @@ begin
                 end if;
             
             when NEWKEY =>
-                --letter := "00110";
                 letter := unsigned(curr_key);
-                --letter:= unsigned(KEY);
                 prev_key := unsigned(curr_key);
                 if KEY = "00000" then
                     state <= IDLE;
@@ -84,7 +87,6 @@ begin
                 
             when OUTPUT =>
                 if pulse_active = '1' then
-                    -- If pulse is active, set bus_signal to 
                     LETTER_OUT <= std_logic_vector(letter);
                     prev_key := "00000";
                     letter:= "00000";
@@ -94,14 +96,12 @@ begin
                     state <= IDLE;
 
                 else
-                    -- If pulse is inactive, set bus_signal to '0000'
                     LETTER_OUT <= "00000";
                 end if;
                 
 
             when BACKSPACE =>
                 if pulse_active = '1' then
-                    -- If pulse is active, set bus_signal to 
                     BCKSPC <= '1';
                     pulse_active <= '0'; -- Deactivate pulse for next cycle
                 elsif KEY = "00000" then
@@ -109,7 +109,7 @@ begin
                     BCKSPC <= '0';
                     state <= IDLE;
                 else
-                    -- If pulse is inactive, set bus_signal to '0000'
+                    -- If pulse is inactive, set output to '0000'
                     LETTER_OUT <= "00000";
                     BCKSPC <= '0';
                 end if;
