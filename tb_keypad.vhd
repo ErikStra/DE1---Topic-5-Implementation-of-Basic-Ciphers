@@ -1,18 +1,18 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: JEV TEAM
+-- Engineer: Jindra Zobac
 -- 
 -- Create Date: 04/29/2024 10:40:42 AM
--- Design Name: 
+-- Design Name: Keyad testbench
 -- Module Name: tb_keypad - Behavioral
--- Project Name: 
--- Target Devices: 
+-- Project Name: Ciphers on FPGA
+-- Target Devices: Nexys A50T
 -- Tool Versions: 
--- Description: 
+-- Description: This is testbench for module "keypad"
 -- 
--- Dependencies: 
+-- Dependencies: keypad.vhd
 -- 
--- Revision:
+-- Revision: 1
 -- Revision 0.01 - File Created
 -- Additional Comments:
 -- 
@@ -25,12 +25,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity tb_keyboard_matrix is
-end tb_keyboard_matrix;
+entity tb_keypad is
+end tb_keypad;
 
-architecture tb of tb_keyboard_matrix is
+architecture tb of tb_keypad is
 
-    component keyboard_matrix
+    component keypad
         port (CLK : in std_logic;
               RST : in std_logic;
               ROW : out std_logic_vector (3 downto 0);
@@ -50,7 +50,7 @@ architecture tb of tb_keyboard_matrix is
 
 begin
 
-    dut : keyboard_matrix
+    dut : keypad
     port map (CLK => CLK,
               RST => RST,
               ROW => ROW,
@@ -74,7 +74,8 @@ begin
         wait for 100 ns;
         RST <= '0';
         wait for 100 ns;
-        
+
+        --simulating random keypresses
         COL <= "1111";
         wait for 10 ns;
         COL <= "1111";
@@ -100,7 +101,7 @@ end tb;
 
 -- Configuration block below is required by some simulators. Usually no need to edit.
 
-configuration cfg_tb_keyboard_matrix of tb_keyboard_matrix is
+configuration cfg_tb_keypad of tb_keypad is
     for tb
     end for;
-end cfg_tb_keyboard_matrix;
+end cfg_tb_keypad;
