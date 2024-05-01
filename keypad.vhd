@@ -27,15 +27,15 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 
-entity keyboard_matrix is
+entity keypad is
     Port ( CLK : in STD_LOGIC;
            RST : in STD_LOGIC;
            ROW : out STD_LOGIC_VECTOR (3 downto 0);   -- in constraints assign rows R0, R1, R2, R3 (top to bottom)
            COL : in STD_LOGIC_VECTOR (3 downto 0);    -- in constraints assign columns C1, C2, C3, C4 (left to right)
            KEY : out STD_LOGIC_VECTOR (4 downto 0));  -- 5bit code of the letter (00001 = A, 00010 = B etc)
-end keyboard_matrix;
+end keypad;
 
-architecture Behavioral of keyboard_matrix is
+architecture Behavioral of keypad is
 
     type state_type is (S1, S2, S3, S4);  -- States of FSM 
     signal current_state: state_type;  -- signals for current and next state
