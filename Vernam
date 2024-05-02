@@ -18,7 +18,7 @@ architecture Behavioral of Vernam is
     
     
 begin
-    code : process (clk)
+    code : process (clk);
     variable xor_sum : unsigned(4 downto 0)    
     begin
         if rising_edge(clk) then            
@@ -29,7 +29,7 @@ begin
         end if;
     end process code;
     
-    decode : process (clk    
+    decode : process (clk);    
     variable xor_sub : unsigned(4 downto 0);
     begin
         if rising_edge(clk) then
