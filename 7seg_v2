@@ -69,6 +69,7 @@ begin
             when STOP =>
                 display_number <= "11111"; -- Stop displaying
                 next_state <= STOP;
+            when others =>
         end case;
     end process;
 
@@ -77,82 +78,84 @@ begin
     begin
         case display_number is
             when  "00000" =>
-                code_out(4 downto 0) <= "11001";
+                display_segments <= "1010100";
                 
             when  "00001" =>
-                code_out(4 downto 0) <= "11000";
+               display_segments <= "1010100";
                 
             when  "00010" =>
-                code_out(4 downto 0) <= "10111";
+                display_segments <= "1010100";
                 
             when  "00011" =>
-                code_out(4 downto 0) <= "10110";
+                display_segments <= "1010100";
                 
             when  "00100" =>
-                code_out(4 downto 0) <= "10101";
+               display_segments <= "1010100";
                 
             when  "00101" =>
-                code_out(4 downto 0) <= "10100";
+                display_segments <= "1010100";
                 
             when  "00110" =>
-                code_out(4 downto 0) <= "10011";
+                display_segments <= "1010100";
                 
             when  "00111" =>
-                code_out(4 downto 0) <= "10010";
+                display_segments <= "1010100";
                 
             when  "01000" =>
-                code_out(4 downto 0) <= "10001";
+                display_segments <= "1010100";
                 
             when  "01001" =>
-                code_out(4 downto 0) <= "10000";
+                display_segments <= "1010100";
                 
             when  "01010" =>
-                code_out(4 downto 0) <= "01111";
+                display_segments <= "1010100";
                 
             when  "01011" =>
-                code_out(4 downto 0) <= "01110";
+                display_segments <= "1010100";
                 
             when  "01100" =>
-                code_out(4 downto 0) <= "01101";
+                display_segments <= "1010100";
                 
             when  "01101" =>
-                code_out(4 downto 0) <= "01100";
+                display_segments <= "1010100";
                 
             when  "01110" =>
-                code_out(4 downto 0) <= "01011";
+                display_segments <= "1010100";
                 
             when  "01111" =>
-                code_out(4 downto 0) <= "01010";
+                display_segments <= "1010100";
                 
             when  "10000" =>
-                code_out(4 downto 0) <= "01001";
+                display_segments <= "1010100";
                 
             when  "10001" =>
-                code_out(4 downto 0) <= "01000";
+                display_segments <= "1010100";
                 
             when  "10010" =>
-                code_out(4 downto 0) <= "00111";
+                display_segments <= "1010100";
                 
             when  "10011" =>
-                code_out(4 downto 0) <= "00110";
+                display_segments <= "1010100";
                 
             when  "10100" =>
-                code_out(4 downto 0) <= "00101";
+                display_segments <= "1010100";
                 
             when  "10101" =>
-                code_out(4 downto 0) <= "00100";
+                display_segments <= "1010100";
                 
             when  "10110" =>
-                code_out(4 downto 0) <= "00011";
+                display_segments <= "1010100";
                 
             when  "10111" =>
-                code_out(4 downto 0) <= "00010";
+                display_segments <= "1010100";
                 
             when  "11000" =>
-                code_out(4 downto 0) <= "00001";
+                display_segments <= "1010100";
                 
             when  "11001" =>
-                code_out(4 downto 0) <= "00000";
+                display_segments <= "1010100";
+            when others =>
+                display_segments <= "1010100";      
         end case;
     end process;
 
@@ -169,6 +172,8 @@ begin
             when DISPLAY_4 =>
                 display_enable <= "0111"; -- Enable fourth display
             when STOP =>
+                display_enable <= "0000"; -- Disable all displays
+            when others =>
                 display_enable <= "0000"; -- Disable all displays
         end case;
     end process;
