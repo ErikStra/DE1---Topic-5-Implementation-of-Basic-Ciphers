@@ -1,0 +1,94 @@
+library ieee;
+  use ieee.std_logic_1164.all;
+
+-------------------------------------------------
+
+entity bin2seg is
+  port (
+    clear : in    std_logic;                    --! Clear the display
+    bin   : in    std_logic_vector(4 downto 0); --! Binary representation of one hexadecimal symbol
+    seg   : out   std_logic_vector(6 downto 0)  --! Seven active-low segments from A to G
+  );
+end entity bin2seg;
+
+-------------------------------------------------
+
+architecture behavioral of bin2seg is
+begin
+
+  --! This combinational process decodes binary
+  --! input (`bin`) into 7-segment display output
+  --! (`seg`) for a Common Anode configuration.
+  --! When either `bin` or `clear` changes, the
+  --! process is triggered. Each bit in `seg`
+  --! represents a segment from A to G. The display
+  --! is cleared if input `clear` is set to 1.
+  p_7seg_decoder : process (bin, clear) is
+  begin
+
+    if (clear = '1') then
+      seg <= "1111111";     -- Clear the display
+    else
+      case bin is
+
+    when "00000" =>
+        seg <= "1011111"; -- A
+    when "00001" =>
+        seg <= "1111100"; -- B
+    when "00010" =>
+        seg <= "1011000"; -- C
+    when "00011" =>
+        seg <= "1011110"; -- D
+    when "00100" =>
+        seg <= "1111001"; -- E
+    when "00101" =>
+        seg <= "1110001"; -- F
+    when "00110" =>
+        seg <= "0111110"; -- G
+    when "00111" =>
+        seg <= "1110100"; -- H
+    when "01000" =>
+        seg <= "0010001"; -- I
+    when "01001" =>
+        seg <= "0001101"; -- J
+    when "01010" =>
+        seg <= "1110101"; -- K
+    when "01011" =>
+        seg <= "0111000"; -- L
+    when "01100" =>
+        seg <= "1010101"; -- M
+    when "01101" =>
+        seg <= "1010100"; -- N
+    when "01110" =>
+        seg <= "1011100"; -- O
+    when "01111" =>
+        seg <= "1110011"; -- P
+    when "10000" =>
+        seg <= "1100111"; -- Q
+    when "10001" =>
+        seg <= "1010000"; -- R
+    when "10010" =>
+        seg <= "0101101"; -- S
+    when "10011" =>
+        seg <= "1111000"; -- T
+    when "10100" =>
+        seg <= "0011100"; -- U
+    when "10101" =>
+        seg <= "0101010"; -- V
+    when "10110" =>
+        seg <= "1101010"; -- W
+    when "10111" =>
+        seg <= "0010100"; -- X
+    when "11000" =>
+        seg <= "1101110"; -- Y
+    when "11001" =>
+        seg <= "0011011"; -- Z
+    when others =>
+        seg <= "1111111"; -- null
+end case;
+
+    end if;
+
+  end process p_7seg_decoder;
+
+end architecture behavioral;
