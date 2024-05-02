@@ -1,0 +1,176 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity five_bit_to_seven_segment_multiplexed is
+    Port (
+        clk : in STD_LOGIC;                                     -- Clock input
+        reset : in STD_LOGIC;                                   -- Reset input
+        input_number : in STD_LOGIC_VECTOR (4 downto 0);        -- Input number to be displayed
+        display_segments : out STD_LOGIC_VECTOR (6 downto 0);   -- 7-segment display segments output
+        display_enable : out STD_LOGIC_VECTOR (3 downto 0)      -- Display enable signals
+    );
+end five_bit_to_seven_segment_multiplexed;
+
+architecture Behavioral of five_bit_to_seven_segment_multiplexed is
+    type state_type is (DISPLAY_1, DISPLAY_2, DISPLAY_3, DISPLAY_4, STOP);
+    signal current_state, next_state : state_type;
+    signal shift_counter : integer range 0 to 3 := 0;
+    signal display_number : STD_LOGIC_VECTOR(4 downto 0);
+begin
+
+    -- Process for state machine
+    process(clk, reset)
+    begin
+        if reset = '1' then
+            current_state <= DISPLAY_1;  -- Initial state
+            shift_counter <= 0;
+        elsif rising_edge(clk) then
+            current_state <= next_state;
+        end if;
+    end process;
+
+    -- Process for next state logic
+    process(current_state, shift_counter)
+    begin
+        case current_state is
+            when DISPLAY_1 =>
+                if shift_counter < 4 then
+                    display_number <= input_number;
+                    shift_counter <= shift_counter + 1;
+                    next_state <= DISPLAY_2;
+                else
+                    next_state <= STOP;
+                end if;
+            when DISPLAY_2 =>
+                if shift_counter < 4 then
+                    display_number <= input_number(3 downto 0) & input_number(4);
+                    shift_counter <= shift_counter + 1;
+                    next_state <= DISPLAY_3;
+                else
+                    next_state <= STOP;
+                end if;
+            when DISPLAY_3 =>
+                if shift_counter < 4 then
+                    display_number <= input_number(2 downto 0) & input_number(4 downto 3);
+                    shift_counter <= shift_counter + 1;
+                    next_state <= DISPLAY_4;
+                else
+                    next_state <= STOP;
+                end if;
+            when DISPLAY_4 =>
+                if shift_counter < 4 then
+                    display_number <= input_number(1 downto 0) & input_number(4 downto 2);
+                    shift_counter <= shift_counter + 1;
+                    next_state <= DISPLAY_1;
+                else
+                    next_state <= STOP;
+                end if;
+            when STOP =>
+                display_number <= "11111"; -- Stop displaying
+                next_state <= STOP;
+        end case;
+    end process;
+
+    -- Process for displaying segments
+    process(display_number)
+    begin
+        case display_number is
+            when  "00000" =>
+                code_out(4 downto 0) <= "11001";
+                
+            when  "00001" =>
+                code_out(4 downto 0) <= "11000";
+                
+            when  "00010" =>
+                code_out(4 downto 0) <= "10111";
+                
+            when  "00011" =>
+                code_out(4 downto 0) <= "10110";
+                
+            when  "00100" =>
+                code_out(4 downto 0) <= "10101";
+                
+            when  "00101" =>
+                code_out(4 downto 0) <= "10100";
+                
+            when  "00110" =>
+                code_out(4 downto 0) <= "10011";
+                
+            when  "00111" =>
+                code_out(4 downto 0) <= "10010";
+                
+            when  "01000" =>
+                code_out(4 downto 0) <= "10001";
+                
+            when  "01001" =>
+                code_out(4 downto 0) <= "10000";
+                
+            when  "01010" =>
+                code_out(4 downto 0) <= "01111";
+                
+            when  "01011" =>
+                code_out(4 downto 0) <= "01110";
+                
+            when  "01100" =>
+                code_out(4 downto 0) <= "01101";
+                
+            when  "01101" =>
+                code_out(4 downto 0) <= "01100";
+                
+            when  "01110" =>
+                code_out(4 downto 0) <= "01011";
+                
+            when  "01111" =>
+                code_out(4 downto 0) <= "01010";
+                
+            when  "10000" =>
+                code_out(4 downto 0) <= "01001";
+                
+            when  "10001" =>
+                code_out(4 downto 0) <= "01000";
+                
+            when  "10010" =>
+                code_out(4 downto 0) <= "00111";
+                
+            when  "10011" =>
+                code_out(4 downto 0) <= "00110";
+                
+            when  "10100" =>
+                code_out(4 downto 0) <= "00101";
+                
+            when  "10101" =>
+                code_out(4 downto 0) <= "00100";
+                
+            when  "10110" =>
+                code_out(4 downto 0) <= "00011";
+                
+            when  "10111" =>
+                code_out(4 downto 0) <= "00010";
+                
+            when  "11000" =>
+                code_out(4 downto 0) <= "00001";
+                
+            when  "11001" =>
+                code_out(4 downto 0) <= "00000";
+        end case;
+    end process;
+
+    -- Process for enabling displays
+    process(current_state)
+    begin
+        case current_state is
+            when DISPLAY_1 =>
+                display_enable <= "1110"; -- Enable first display
+            when DISPLAY_2 =>
+                display_enable <= "1101"; -- Enable second display
+            when DISPLAY_3 =>
+                display_enable <= "1011"; -- Enable third display
+            when DISPLAY_4 =>
+                display_enable <= "0111"; -- Enable fourth display
+            when STOP =>
+                display_enable <= "0000"; -- Disable all displays
+        end case;
+    end process;
+
+end Behavioral;
