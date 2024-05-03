@@ -1,0 +1,177 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 05/02/2024 12:36:51 PM
+-- Design Name: 
+-- Module Name: tb_top_level - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+-- Testbench automatically generated online
+-- at https://vhdl.lapinoo.net
+-- Generation date : 2.5.2024 10:36:02 UTC
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tb_top_level is
+end tb_top_level;
+
+architecture tb of tb_top_level is
+
+    component top_level
+        port (CLK100MHZ : in std_logic;
+              CA        : out std_logic;
+              CB        : out std_logic;
+              CC        : out std_logic;
+              CD        : out std_logic;
+              CE        : out std_logic;
+              CF        : out std_logic;
+              CG        : out std_logic;
+              AN        : out std_logic_vector (3 downto 0);
+              SW1       : in std_logic;
+              SW2       : in std_logic;
+              R1        : out std_logic;
+              R2        : out std_logic;
+              R3        : out std_logic;
+              R4        : out std_logic;
+              C1        : in std_logic;
+              C2        : in std_logic;
+              C3        : in std_logic;
+              C4        : in std_logic);
+    end component;
+
+    signal CLK100MHZ : std_logic;
+    signal CA        : std_logic;
+    signal CB        : std_logic;
+    signal CC        : std_logic;
+    signal CD        : std_logic;
+    signal CE        : std_logic;
+    signal CF        : std_logic;
+    signal CG        : std_logic;
+    signal AN        : std_logic_vector (3 downto 0);
+    signal SW1       : std_logic;
+    signal SW2       : std_logic;
+    signal R1        : std_logic;
+    signal R2        : std_logic;
+    signal R3        : std_logic;
+    signal R4        : std_logic;
+    signal C1        : std_logic;
+    signal C2        : std_logic;
+    signal C3        : std_logic;
+    signal C4        : std_logic;
+
+    constant TbPeriod : time := 10 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
+
+begin
+
+    dut : top_level
+    port map (CLK100MHZ => CLK100MHZ,
+              CA        => CA,
+              CB        => CB,
+              CC        => CC,
+              CD        => CD,
+              CE        => CE,
+              CF        => CF,
+              CG        => CG,
+              AN        => AN,
+              SW1       => SW1,
+              SW2       => SW2,
+              R1        => R1,
+              R2        => R2,
+              R3        => R3,
+              R4        => R4,
+              C1        => C1,
+              C2        => C2,
+              C3        => C3,
+              C4        => C4);
+
+    -- Clock generation
+    TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
+
+    -- EDIT: Check that CLK100MHZ is really your main clock signal
+    CLK100MHZ <= TbClock;
+
+    stimuli : process
+    begin
+        -- EDIT Adapt initialization as needed
+        SW1 <= '0';
+        SW2 <= '0';
+        C1 <= '1';
+        C2 <= '1';
+        C3 <= '1';
+        C4 <= '1';
+
+        -- A key
+        wait for 1 * TbPeriod;
+        C1 <= '0';
+        wait for 1 * TbPeriod;
+        C1 <= '1';
+
+        --SEND key
+        wait for 2 * TbPeriod;
+        C4 <= '0';
+        wait for 1 * TbPeriod;
+        C4 <= '1';
+
+        --some other key
+        wait for 2 * TbPeriod;
+        C2 <= '0';
+        wait for 1 * TbPeriod;
+        C2 <= '1';
+
+        -- the same key as before
+        wait for 3 * TbPeriod;
+        C2 <= '0';
+        wait for 1 * TbPeriod;
+        C2 <= '1';
+
+        -- cipher bypass switch set not to bypass the cipher engine
+        wait for 1 * TbPeriod;
+        SW2<= '1';
+        wait for 3 * TbPeriod;
+        
+        
+        C4 <= '0';
+        wait for 1 * TbPeriod;
+        C4 <= '1';
+        
+        SW2<= '0';
+        wait for 3 * TbPeriod;
+        SW2<= '1';
+
+        --BACKSPACE key
+        wait for 4 * TbPeriod;
+        C3 <= '0';
+        wait for 1 * TbPeriod;
+        C3 <= '1';
+      
+        
+        -- EDIT Add stimuli here
+        wait for 100 * TbPeriod;
+
+        -- Stop the clock and hence terminate the simulation
+        TbSimEnded <= '1';
+        wait;
+    end process;
+
+end tb;
+
+-- Configuration block below is required by some simulators. Usually no need to edit.
+
+configuration cfg_tb_top_level of tb_top_level is
+    for tb
+    end for;
+end cfg_tb_top_level;
