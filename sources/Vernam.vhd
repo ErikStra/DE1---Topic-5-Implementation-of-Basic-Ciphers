@@ -1,0 +1,44 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity Vernam is
+    port (
+        clk             : in std_logic;
+        input           : in  std_logic_vector(4 downto 0);
+        key           	: in  std_logic_vector(4 downto 0);
+        coded_txt       : in STD_LOGIC_VECTOR(4 downto 0);
+        SW              : in STD_LOGIC;
+        code_out     : out std_logic_vector(4 downto 0);
+        decode_out   : out std_logic_vector(4 downto 0)
+    );
+end entity Vernam;
+
+architecture Behavioral of Vernam is
+    
+    
+begin
+process (clk)
+    variable xor_sum : unsigned(4 downto 0);    
+    begin
+        if rising_edge(clk) then            
+            if(SW='0') then
+                xor_sum := unsigned(input) XOR unsigned(key);
+                code_out <= std_logic_vector(xor_sum);
+            end if;
+        end if;
+    end process;
+    
+process (clk)    
+    variable xor_sub : unsigned(4 downto 0);
+    begin
+        if rising_edge(clk) then
+            if(SW='1') then
+                xor_sub := unsigned(coded_txt) XOR unsigned(key);
+                decode_out <= std_logic_vector(xor_sub);
+            end if;
+        end if;
+end process;
+    
+    
+end architecture Behavioral;
